@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tab_animal/game/animal_select.dart';
 
 class GameTitle extends StatefulWidget {
   const GameTitle({super.key});
@@ -40,23 +41,35 @@ class _GameTitleState extends State<GameTitle>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-              child: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Opacity(
-                  opacity: _opacityAnimation.value,
-                  child: Image.asset(
-                    "assets/images/game_title.png",
-                    fit: BoxFit.cover,
-                  ));
-            },
-          ))
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const AnimalSelect()));
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned.fill(
+                child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) {
+                return Opacity(
+                    opacity: _opacityAnimation.value,
+                    child: Image.asset(
+                      "assets/images/game_title.png",
+                      fit: BoxFit.cover,
+                    ));
+              },
+            ))
+          ],
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }

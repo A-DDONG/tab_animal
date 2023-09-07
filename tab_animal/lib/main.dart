@@ -10,9 +10,10 @@ class TabAnimalApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: "터치해서 동물 키우기",
-      home: TitleSplash(),
+      theme: ThemeData(fontFamily: 'Mabinogi'),
+      home: const TitleSplash(),
     );
   }
 }
