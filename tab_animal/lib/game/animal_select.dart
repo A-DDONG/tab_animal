@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tab_animal/game/name_input.dart';
+import 'package:tab_animal/provider/animal_provider.dart';
+import 'package:provider/provider.dart';
 
 class AnimalSelect extends StatefulWidget {
   const AnimalSelect({super.key});
@@ -8,10 +11,10 @@ class AnimalSelect extends StatefulWidget {
 }
 
 class _AnimalSelectState extends State<AnimalSelect> {
-  final animalImages = [
-    'assets/images/dog.png',
-    'assets/images/penguin.png',
-    'assets/images/cat.png',
+  final animalNames = [
+    'dog',
+    'cat',
+    'penguin',
   ];
   final pageController = PageController();
   int currentPage = 0;
@@ -34,6 +37,10 @@ class _AnimalSelectState extends State<AnimalSelect> {
 
   @override
   Widget build(BuildContext context) {
+    final animalProvider = Provider.of<AnimalProvider>(context, listen: false);
+    final animalImages = animalNames
+        .map((name) => animalProvider.animalImageMap[name]!)
+        .toList();
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -92,34 +99,63 @@ class _AnimalSelectState extends State<AnimalSelect> {
                       ),
                     ),
                     Positioned(
-                        bottom: boxHeight * 0.17,
-                        left: 0,
-                        right: 0,
+                      bottom: boxHeight * 0.17,
+                      left: 0,
+                      right: 0,
+                      child: Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (currentPage > 0)
-                              ElevatedButton(
-                                onPressed: () {
-                                  pageController.jumpToPage(currentPage - 1);
-                                },
-                                child: const Text("이전"),
+                            Visibility(
+                              visible: currentPage > 0,
+                              replacement: const SizedBox(
+                                  width: 70), // 이 공간은 "이전" 버튼이 없을 때 차지합니다.
+                              child: SizedBox(
+                                width: 70,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    pageController.jumpToPage(currentPage - 1);
+                                  },
+                                  child: const Text("이전"),
+                                ),
                               ),
-                            ElevatedButton(
-                              onPressed: () {
-                                // 선택 버튼을 눌렀을 때의 로직
-                              },
-                              child: const Text('선택'),
                             ),
-                            if (currentPage < animalImages.length - 1)
-                              ElevatedButton(
+                            const SizedBox(width: 10), // 여기서는 버튼과 버튼 사이의 간격을 조정
+                            SizedBox(
+                              width: 70,
+                              child: ElevatedButton(
                                 onPressed: () {
-                                  pageController.jumpToPage(currentPage + 1);
+                                  animalProvider.setSelectedAnimal(
+                                      animalNames[currentPage]);
+                                  // 선택 버튼을 눌렀을 때의 로직
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) =>
+                                              const NameInput())));
                                 },
-                                child: const Text("다음"),
+                                child: const Text('선택'),
                               ),
+                            ),
+                            const SizedBox(width: 10), // 여기서는 버튼과 버튼 사이의 간격을 조정
+                            Visibility(
+                              visible: currentPage < animalImages.length - 1,
+                              replacement: const SizedBox(
+                                  width: 70), // 이 공간은 "다음" 버튼이 없을 때 차지합니다.
+                              child: SizedBox(
+                                width: 70,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    pageController.jumpToPage(currentPage + 1);
+                                  },
+                                  child: const Text("다음"),
+                                ),
+                              ),
+                            ),
                           ],
-                        ))
+                        ),
+                      ),
+                    )
                   ],
                 );
               },
