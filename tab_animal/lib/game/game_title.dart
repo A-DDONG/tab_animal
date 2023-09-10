@@ -1,5 +1,8 @@
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tab_animal/game/animal_select.dart';
+import 'package:tab_animal/provider/bgm_provider.dart';
 
 class GameTitle extends StatefulWidget {
   const GameTitle({super.key});
@@ -16,6 +19,10 @@ class _GameTitleState extends State<GameTitle>
   @override
   void initState() {
     super.initState();
+
+    Future.delayed(Duration.zero, () {
+      Provider.of<BgmProvider>(context, listen: false).playBgm();
+    });
 
     _controller = AnimationController(
       vsync: this,

@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tab_animal/game/title_splash.dart';
 import 'package:tab_animal/provider/animal_provider.dart';
+import 'package:tab_animal/provider/bgm_provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => AnimalProvider(),
-    child: const TabAnimalApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AnimalProvider()),
+        ChangeNotifierProvider(create: (context) => BgmProvider()),
+      ],
+      child: const TabAnimalApp(),
+    ),
+  );
 }
 
 class TabAnimalApp extends StatelessWidget {

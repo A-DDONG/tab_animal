@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tab_animal/game/name_input.dart';
 import 'package:tab_animal/provider/animal_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:tab_animal/provider/bgm_provider.dart';
 
 class AnimalSelect extends StatefulWidget {
   const AnimalSelect({super.key});
@@ -22,6 +23,9 @@ class _AnimalSelectState extends State<AnimalSelect> {
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      Provider.of<BgmProvider>(context, listen: false).playBgm();
+    });
     pageController.addListener(() {
       setState(() {
         currentPage = pageController.page!.toInt();
@@ -126,6 +130,8 @@ class _AnimalSelectState extends State<AnimalSelect> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   animalProvider.setSelectedAnimal(
+                                      animalNames[currentPage]);
+                                  animalProvider.playAnimalSound(
                                       animalNames[currentPage]);
                                   // 선택 버튼을 눌렀을 때의 로직
                                   Navigator.pushReplacement(

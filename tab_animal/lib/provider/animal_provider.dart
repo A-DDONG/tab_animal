@@ -1,3 +1,4 @@
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 
 class AnimalProvider extends ChangeNotifier {
@@ -20,5 +21,10 @@ class AnimalProvider extends ChangeNotifier {
     selectedAnimal = newAnimal;
     selectedAnimalImage = animalImageMap[newAnimal] ?? '';
     notifyListeners();
+  }
+
+  void playAnimalSound(String selectedAnimal) {
+    String soundFile = '$selectedAnimal.mp3';
+    FlameAudio.play(soundFile);
   }
 }

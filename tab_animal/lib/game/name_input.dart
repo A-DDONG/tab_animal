@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tab_animal/game/animal_select.dart';
 import 'package:tab_animal/game/main_game.dart';
 import 'package:tab_animal/provider/animal_provider.dart';
+import 'package:tab_animal/provider/bgm_provider.dart';
 
 class NameInput extends StatefulWidget {
   const NameInput({Key? key}) : super(key: key);
@@ -17,6 +18,14 @@ class _NameInputState extends State<NameInput> {
   String displayedName = "";
   bool isNameConfirmed = false;
 
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      Provider.of<BgmProvider>(context, listen: false).playBgm();
+    });
+  }
+
   void updateName() {
     final animalProvider = Provider.of<AnimalProvider>(context, listen: false);
     animalProvider.setName(nameController.text);
@@ -27,7 +36,7 @@ class _NameInputState extends State<NameInput> {
     final animalProvider = Provider.of<AnimalProvider>(context);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: <Widget>[
           Positioned.fill(
