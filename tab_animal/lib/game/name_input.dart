@@ -28,7 +28,48 @@ class _NameInputState extends State<NameInput> {
 
   void updateName() {
     final animalProvider = Provider.of<AnimalProvider>(context, listen: false);
-    animalProvider.setName(nameController.text);
+    String inputName = nameController.text.trim(); // 공백 제거
+
+    if (inputName.isEmpty) {
+      // 이름이 공백일 경우
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("알림"),
+          content: const Text("이름이 비어있어요."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("확인"),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    if (inputName.length > 7) {
+      // 이름이 7글자를 초과할 경우
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("알림"),
+          content: const Text("이름은 7글자를 넘을 수 없어요."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("확인"),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    animalProvider.setName(inputName);
+    setState(() {
+      isNameConfirmed = true;
+    }); // 공백 제거
   }
 
   @override

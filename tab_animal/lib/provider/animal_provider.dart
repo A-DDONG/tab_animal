@@ -12,6 +12,16 @@ class AnimalProvider extends ChangeNotifier {
     'penguin': 'assets/images/penguin.png',
   };
 
+  final animalNameMap = {
+    'dog': '개',
+    'cat': '고양이',
+    'penguin': '펭귄',
+  };
+
+  String getSelectedAnimalInKorean() {
+    return animalNameMap[selectedAnimal] ?? '알 수 없음';
+  }
+
   void setName(String newName) {
     name = newName;
     notifyListeners();
