@@ -43,8 +43,8 @@ class _WinkingCatState extends State<WinkingCat>
     )..repeat();
 
     _images = [
-      Image.asset('assets/images/wink3.png'),
-      Image.asset('assets/images/wink4.png'),
+      Image.asset('assets/images/wink1.png'),
+      Image.asset('assets/images/wink2.png'),
     ];
   }
 

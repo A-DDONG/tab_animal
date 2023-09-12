@@ -202,11 +202,11 @@ class WalkingGameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GameWidget(
       game: walkingGame,
-      overlayBuilderMap: {
-        KeyConstants.overlayKey: (BuildContext context, WalkingGame game) {
-          return OverlayController(game: game);
-        }
-      },
+      // overlayBuilderMap: {
+      //   KeyConstants.overlayKey: (BuildContext context, WalkingGame game) {
+      //     return OverlayController(game: game);
+      //   }
+      // },
     );
   }
 }

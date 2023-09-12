@@ -1,14 +1,17 @@
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/gestures.dart';
 import 'package:tab_animal/sprite/components/animal_component.dart';
 import 'package:tab_animal/sprite/constants/all_constants.dart';
 
-class WalkingGame extends FlameGame with HasCollisionDetection {
+enum CharacterState { idle, walking }
+
+class WalkingGame extends FlameGame
+    with HasCollisionDetection, MultiTouchDragDetector, TapDetector {
   late double mapWidth = 1080;
   late double mapHeight = 1920;
-  WalkingDirection direction = WalkingDirection.idle;
-  final double characterSpeed = 380;
   final _world = World();
 
   // avatar sprint
@@ -21,11 +24,11 @@ class WalkingGame extends FlameGame with HasCollisionDetection {
   // Camera Components
   late final CameraComponent _cameraComponent;
 
+  Vector2? targetPosition;
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-    overlays.add(KeyConstants.overlayKey);
 
     _background = SpriteComponent(
       sprite: Sprite(
@@ -39,8 +42,7 @@ class WalkingGame extends FlameGame with HasCollisionDetection {
     _world.add(_background);
 
     _avatar = AnimalComponent(walkingGame: this)
-      ..position =
-          Vector2(mapWidth / 2 - 50, mapHeight / 2 - 50) // 50은 캐릭터 크기의 절반입니다.
+      ..position = Vector2(mapWidth / 2 - 50, mapHeight / 2 - 50)
       ..debugMode = true
       ..size = Vector2(100, 100);
 
@@ -48,10 +50,33 @@ class WalkingGame extends FlameGame with HasCollisionDetection {
     _world.add(_avatar);
 
     _cameraComponent = CameraComponent(world: _world)
-      ..setBounds(Rectangle.fromLTRB(200, 430, mapWidth - 200, mapHeight - 430))
+      // ..setBounds(Rectangle.fromLTRB(200, 430, mapWidth - 200, mapHeight - 430))
+      ..setBounds(Rectangle.fromLTRB(0, 0, mapWidth, mapHeight))
       ..viewfinder.anchor = Anchor.center
       ..follow(_avatar);
+    print(
+        "Target Position: $targetPosition, Current Position: ${_avatar.position}");
 
     addAll([_cameraComponent, _world]);
+  }
+
+  @override
+  void onTapDown(TapDownInfo info) {
+    _avatar.setTargetPosition(info.eventPosition.game);
+  }
+
+  @override
+  void onDragStart(int pointerId, DragStartInfo info) {
+    _avatar.setTargetPosition(info.eventPosition.game);
+  }
+
+  @override
+  void onDragUpdate(int pointerId, DragUpdateInfo info) {
+    _avatar.setTargetPosition(info.eventPosition.game);
+  }
+
+  @override
+  void onDragEnd(int pointerId, DragEndInfo info) {
+    _avatar.stopMoving();
   }
 }
