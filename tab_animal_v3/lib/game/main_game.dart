@@ -3,6 +3,7 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tab_animal/game/main_game_menu.dart';
 import 'package:tab_animal/game/walking_game.dart';
 import 'package:tab_animal/provider/animal_provider.dart';
 import 'package:tab_animal/provider/bgm_provider.dart';
@@ -19,6 +20,7 @@ class _MainGameState extends State<MainGame> {
   Sprite? nameBarSprite;
   Sprite? eventMenuSprite;
   Sprite? expBarSprite;
+  Sprite? topMenuSprite;
 
   WalkingGame? walkingGame;
 
@@ -48,10 +50,20 @@ class _MainGameState extends State<MainGame> {
           Sprite(image, srcPosition: Vector2(240, 0), srcSize: Vector2(55, 55));
       expBarSprite = Sprite(image,
           srcPosition: Vector2(40, 40), srcSize: Vector2(160, 40));
+      topMenuSprite = Sprite(image,
+          srcPosition: Vector2(40, 80), srcSize: Vector2(280, 40));
     });
   }
 
   double scaleValue = 1.0; // 이미지 크기 조절 변수
+
+  bool _isMenuOpen = false; // 메뉴가 열려있는지 확인하는 변수
+
+  void _toggleMenu() {
+    setState(() {
+      _isMenuOpen = !_isMenuOpen;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,39 +74,43 @@ class _MainGameState extends State<MainGame> {
       body: Stack(
         children: <Widget>[
           WalkingGameWidget(walkingGame: walkingGame!),
-          if (menuSprite != null)
-            Positioned(
-              left: 20,
-              top: 20,
-              child: CustomPaint(
-                size: const Size(60, 60),
-                painter: SpritePainter(menuSprite!,
-                    text: '메뉴',
-                    textOffset: const Offset(13, 20)), // text 매개변수 추가
-              ),
-            ),
-          if (nameBarSprite != null)
-            Positioned(
-              left: 90, // 원하는 x 좌표
-              top: 20, // 원하는 y 좌표
-              child: CustomPaint(
-                size: const Size(240, 60),
-                painter: SpritePainter(nameBarSprite!,
-                    text:
-                        "이름: ${animalProvider.name ?? '알 수 없음'} / Lv: ${animalProvider.level}",
-                    textOffset: const Offset(10, 20)),
-              ),
-            ),
-          if (menuSprite != null)
-            Positioned(
-              left: 340,
-              top: 20,
-              child: CustomPaint(
-                size: const Size(60, 60),
-                painter: SpritePainter(menuSprite!,
-                    text: animalProvider.getSelectedAnimalInKorean(),
-                    textOffset: const Offset(4, 20)), // text 매개변수 추가
-              ),
+          if (topMenuSprite != null)
+            Stack(
+              children: [
+                Positioned(
+                  left: 10,
+                  top: 20,
+                  child: CustomPaint(
+                    size: const Size(390, 100),
+                    painter: SpritePainter(
+                      topMenuSprite!,
+                      textOffsets: {
+                        '메뉴': const Offset(13, 20),
+                        '이름: ${animalProvider.name ?? '알 수 없음'}':
+                            const Offset(100, 20),
+                        '종류: ${animalProvider.getSelectedAnimalInKorean()}':
+                            const Offset(250, 20),
+                        '경험치: ${animalProvider.exp} / ${animalProvider.expRequiredForNextLevel}':
+                            const Offset(100, 60),
+                      },
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 10 + 13, // '메뉴' 텍스트의 x 좌표
+                  top: 20 + 20, // '메뉴' 텍스트의 y 좌표
+                  child: GestureDetector(
+                    onTap: () {
+                      _toggleMenu(); // 메뉴를 열거나 닫습니다.
+                    },
+                    child: Container(
+                      width: 50, // '메뉴' 텍스트의 너비
+                      height: 20, // '메뉴' 텍스트의 높이
+                      color: Colors.transparent, // 투명한 색
+                    ),
+                  ),
+                ),
+              ],
             ),
           if (eventMenuSprite != null)
             Positioned(
@@ -103,7 +119,7 @@ class _MainGameState extends State<MainGame> {
               child: CustomPaint(
                 size: const Size(75, 75),
                 painter: SpritePainter(eventMenuSprite!,
-                    text: '산책', textOffset: const Offset(10, 18)),
+                    text: '산책', textOffset: const Offset(20, 25)),
               ),
             ),
           if (eventMenuSprite != null)
@@ -113,7 +129,7 @@ class _MainGameState extends State<MainGame> {
               child: CustomPaint(
                 size: const Size(75, 75),
                 painter: SpritePainter(eventMenuSprite!,
-                    text: '상점', textOffset: const Offset(10, 18)),
+                    text: '상점', textOffset: const Offset(20, 25)),
               ),
             ),
           if (eventMenuSprite != null)
@@ -123,7 +139,7 @@ class _MainGameState extends State<MainGame> {
               child: CustomPaint(
                 size: const Size(75, 75),
                 painter: SpritePainter(eventMenuSprite!,
-                    text: '가방', textOffset: const Offset(10, 18)),
+                    text: '가방', textOffset: const Offset(20, 25)),
               ),
             ),
           if (eventMenuSprite != null)
@@ -133,19 +149,7 @@ class _MainGameState extends State<MainGame> {
               child: CustomPaint(
                 size: const Size(75, 75),
                 painter: SpritePainter(eventMenuSprite!,
-                    text: '모름', textOffset: const Offset(10, 18)),
-              ),
-            ),
-          if (expBarSprite != null)
-            Positioned(
-              left: 20, // 원하는 x 좌표
-              top: 90, // 원하는 y 좌표
-              child: CustomPaint(
-                size: const Size(250, 60),
-                painter: SpritePainter(expBarSprite!,
-                    text:
-                        '경험치: ${animalProvider.exp} / ${animalProvider.expRequiredForNextLevel}',
-                    textOffset: const Offset(10, 20)),
+                    text: '모름', textOffset: const Offset(20, 25)),
               ),
             ),
           if (eventMenuSprite != null)
@@ -168,10 +172,19 @@ class _MainGameState extends State<MainGame> {
                   },
                   child: CustomPaint(
                     size: const Size(100, 100),
-                    painter: SpritePainter(expBarSprite!,
-                        text: '먹이', textOffset: const Offset(10, 20)),
+                    painter: SpritePainter(eventMenuSprite!,
+                        text: '먹이', textOffset: const Offset(30, 40)),
                   ),
                 ),
+              ),
+            ),
+          // 메뉴 화면 추가
+          if (_isMenuOpen)
+            Positioned.fill(
+              child: MainMenu(
+                onClose: () {
+                  _toggleMenu(); // 메뉴를 닫습니다.
+                },
               ),
             ),
         ],
@@ -203,22 +216,39 @@ class WalkingGameWidget extends StatelessWidget {
 
 class SpritePainter extends CustomPainter {
   final Sprite sprite;
-  final String text;
-  final Offset textOffset; // 텍스트 위치를 조정할 Offset 값
+  final String? text; // 기존의 단일 텍스트
+  final Offset? textOffset; // 기존의 단일 오프셋
+  final Map<String, Offset>? textOffsets; // 새로운 여러 텍스트와 오프셋
 
-  SpritePainter(this.sprite, {required this.text, required this.textOffset});
+  SpritePainter(this.sprite, {this.text, this.textOffset, this.textOffsets});
 
   @override
   void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color.fromRGBO(255, 255, 255, 1.0); // 메뉴 투명도조절
     sprite.render(
       canvas,
       position: Vector2(0, 0),
       size: Vector2(size.width, size.height),
+      overridePaint: paint,
     );
+
+    // 기존의 단일 텍스트 그리기
+    if (text != null && textOffset != null) {
+      _drawText(canvas, size, text!, textOffset!);
+    }
+
+    // 새로운 여러 텍스트 그리기
+    textOffsets?.forEach((text, offset) {
+      _drawText(canvas, size, text, offset);
+    });
+  }
+
+  void _drawText(Canvas canvas, Size size, String text, Offset offset) {
     final textSpan = TextSpan(
       text: text,
       style: const TextStyle(
-          color: Colors.black, fontSize: 20, fontFamily: 'Mabinogi'),
+          color: Colors.white, fontSize: 20, fontFamily: 'Mabinogi'),
     );
     final textPainter = TextPainter(
         text: textSpan,
@@ -228,12 +258,7 @@ class SpritePainter extends CustomPainter {
       minWidth: 0,
       maxWidth: size.width,
     );
-    final offset = Offset(
-      (size.width - textPainter.width) / 2, // 가운데 정렬을 위한 x 좌표
-      (size.height - textPainter.height) / 2, // 가운데 정렬을 위한 y 좌표
-    );
-
-    textPainter.paint(canvas, offset); // 생성자에서 받은 Offset 값 사용
+    textPainter.paint(canvas, offset);
   }
 
   @override
