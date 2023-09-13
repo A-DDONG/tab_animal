@@ -38,7 +38,7 @@ class AnimalComponent extends SpriteAnimationComponent with HasGameRef {
 
     final spriteSheet = SpriteSheet(
       image: await gameRef.images.load(animalSprite),
-      srcSize: Vector2(384 / 4, 864 / 8),
+      srcSize: Vector2(384 / 4, 768 / 8),
     );
 
     _downAnimation =
