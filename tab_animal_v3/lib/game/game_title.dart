@@ -46,27 +46,26 @@ class _GameTitleState extends State<GameTitle>
       }
     });
     _controller.forward(); // 애니메이션 시작
-
-    Future.delayed(Duration.zero, () async {
-      if (FirebaseAuth.instance.currentUser != null) {
-        String uid = FirebaseAuth.instance.currentUser!.uid;
-        await Provider.of<AnimalProvider>(context, listen: false)
-            .initializeProvider(context, uid); // 수정된 부분
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const MainGame()));
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await showLoginPopup(context);
-      }, // onTap: () {
-      //   Navigator.pushReplacement(context,
-      //       MaterialPageRoute(builder: (context) => const AnimalSelect()));
-      // },
+        print('화면 탭됨');
+        User? currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          String uid = currentUser.uid;
+          print('사용자 있음: $uid');
+          await Provider.of<AnimalProvider>(context, listen: false)
+              .initializeProvider(context, uid);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const MainGame()));
+        } else {
+          print('사용자 없음, 로그인 팝업 표시');
+          await showLoginPopup(context);
+        }
+      },
       child: Scaffold(
         body: Stack(
           children: [

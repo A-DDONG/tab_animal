@@ -7,6 +7,8 @@ import 'package:tab_animal/provider/animal_provider.dart';
 import 'package:tab_animal/sprite/components/animal_component.dart';
 import 'package:tab_animal/sprite/constants/all_constants.dart';
 
+enum GameMap { home, walking }
+
 class WalkingGame extends FlameGame with HasCollisionDetection {
   late double mapWidth = 1080;
   late double mapHeight = 1920;
@@ -14,6 +16,23 @@ class WalkingGame extends FlameGame with HasCollisionDetection {
   final double characterSpeed = 100;
   final _world = World();
   late String animalSprite;
+
+  // WalkingGame 클래스에 currentMap 상태 변수 추가
+  GameMap currentMap = GameMap.home;
+
+  Future<void> switchMap(GameMap newMap) async {
+    currentMap = newMap;
+
+    if (newMap == GameMap.walking) {
+      // 산책 맵으로 설정
+      _background.sprite = Sprite(await images.load('walking_background.png'));
+      _avatar.position = Vector2(mapWidth / 2, mapHeight / 2);
+    } else {
+      // 홈 맵으로 설정
+      _background.sprite = Sprite(await images.load('main_background.png'));
+      _avatar.position = Vector2(mapWidth / 2, mapHeight / 2);
+    }
+  }
 
   WalkingGame(BuildContext context) {
     final animalProvider = Provider.of<AnimalProvider>(context, listen: false);

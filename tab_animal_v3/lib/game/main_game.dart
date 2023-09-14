@@ -65,21 +65,39 @@ class _MainGameState extends State<MainGame> {
     });
   }
 
-  List<Widget> buildEventMenuButtons(Sprite? sprite) {
+  List<Widget> buildEventMenuButtons(Sprite? sprite, GameMap currentMap) {
     if (sprite == null) return [];
-    const buttonTexts = ['산책', '상점', '가방', '정보'];
-    const buttonOffsets = [20.0, 120.0, 220.0, 320.0];
+    List<String> buttonTexts;
+    List<double> buttonOffsets;
+
+    if (currentMap == GameMap.walking) {
+      buttonTexts = ['집'];
+      buttonOffsets = [40.0];
+    } else {
+      buttonTexts = ['산책', '상점', '가방', '정보'];
+      buttonOffsets = [20.0, 120.0, 220.0, 320.0];
+    }
 
     return List.generate(buttonTexts.length, (index) {
       return Positioned(
-        left: buttonOffsets[index],
-        top: 750,
-        child: CustomPaint(
-          size: const Size(75, 75),
-          painter: SpritePainter(sprite,
-              text: buttonTexts[index], textOffset: const Offset(20, 25)),
-        ),
-      );
+          left: buttonOffsets[index],
+          top: 750,
+          child: GestureDetector(
+            onTap: () {
+              if (buttonTexts[index] == '산책') {
+                print("산책 버튼 클릭됨");
+                walkingGame?.switchMap(GameMap.walking);
+              } else if (buttonTexts[index] == '집') {
+                print("집 버튼 클릭됨");
+                walkingGame?.switchMap(GameMap.home);
+              }
+            },
+            child: CustomPaint(
+              size: const Size(75, 75),
+              painter: SpritePainter(sprite,
+                  text: buttonTexts[index], textOffset: const Offset(20, 25)),
+            ),
+          ));
     });
   }
 
@@ -131,7 +149,7 @@ class _MainGameState extends State<MainGame> {
                 ),
               ],
             ),
-          ...buildEventMenuButtons(eventMenuSprite),
+          ...buildEventMenuButtons(eventMenuSprite, walkingGame!.currentMap),
 
           if (eventMenuSprite != null)
             Positioned(
