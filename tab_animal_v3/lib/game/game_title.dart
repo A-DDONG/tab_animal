@@ -1,7 +1,9 @@
-import 'package:flame_audio/flame_audio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tab_animal/game/animal_select.dart';
+import 'package:tab_animal/game/login/login_ui.dart';
+import 'package:tab_animal/game/main_game.dart';
+import 'package:tab_animal/provider/animal_provider.dart';
 import 'package:tab_animal/provider/bgm_provider.dart';
 
 class GameTitle extends StatefulWidget {
@@ -44,15 +46,27 @@ class _GameTitleState extends State<GameTitle>
       }
     });
     _controller.forward(); // 애니메이션 시작
+
+    Future.delayed(Duration.zero, () async {
+      if (FirebaseAuth.instance.currentUser != null) {
+        String uid = FirebaseAuth.instance.currentUser!.uid;
+        await Provider.of<AnimalProvider>(context, listen: false)
+            .initializeProvider(context, uid); // 수정된 부분
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const MainGame()));
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const AnimalSelect()));
-      },
+      onTap: () async {
+        await showLoginPopup(context);
+      }, // onTap: () {
+      //   Navigator.pushReplacement(context,
+      //       MaterialPageRoute(builder: (context) => const AnimalSelect()));
+      // },
       child: Scaffold(
         body: Stack(
           children: [

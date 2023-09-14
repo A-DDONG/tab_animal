@@ -31,7 +31,7 @@ class MainMenu extends StatelessWidget {
                   // 메뉴1 (menu1_ui)
                   Positioned(
                     left: 55, // x 좌표
-                    top: 50, // y 좌표
+                    top: 150, // y 좌표
                     child: GestureDetector(
                       onTap: () {
                         FlameAudio.play('menu_select.mp3'); // 메뉴 선택 효과음
@@ -42,31 +42,49 @@ class MainMenu extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Image.asset(
-                        'assets/images/menu1_ui.png',
+                      child: Container(
                         width: 300,
-                        height: 300,
+                        height: 60,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/menu1_ui.png"),
+                            fit: BoxFit
+                                .cover, // 여기서는 BoxFit.cover를 사용했지만, 필요에 따라 다른 값으로 설정 가능합니다.
+                          ),
+                        ),
                       ),
                     ),
                   ),
                   // 메뉴2 (menu2_ui)
                   Positioned(
                     left: 55, // x 좌표
-                    top: 150, // y 좌표
-                    child: Image.asset(
-                      'assets/images/menu2_ui.png',
+                    top: 250, // y 좌표
+                    child: Container(
                       width: 300,
-                      height: 300,
+                      height: 60,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/menu2_ui.png"),
+                          fit: BoxFit
+                              .cover, // 여기서는 BoxFit.cover를 사용했지만, 필요에 따라 다른 값으로 설정 가능합니다.
+                        ),
+                      ),
                     ),
                   ),
                   // 메뉴3 (menu2_ui)
                   Positioned(
                     left: 55, // x 좌표
-                    top: 250, // y 좌표
-                    child: Image.asset(
-                      'assets/images/menu3_ui.png',
+                    top: 350, // y 좌표
+                    child: Container(
                       width: 300,
-                      height: 300,
+                      height: 60,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/menu3_ui.png"),
+                          fit: BoxFit
+                              .cover, // 여기서는 BoxFit.cover를 사용했지만, 필요에 따라 다른 값으로 설정 가능합니다.
+                        ),
+                      ),
                     ),
                   ),
                   // 닫기 버튼
@@ -88,14 +106,6 @@ class MainMenu extends StatelessWidget {
               ),
             ),
           ),
-          // GestureDetector(
-          //   onTap: () {
-          //     onClose(); // 배경을 탭하면 메뉴를 닫습니다.
-          //   },
-          //   child: Container(
-          //     color: Colors.transparent,
-          //   ),
-          // ),
         ],
       ),
     );

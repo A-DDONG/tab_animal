@@ -82,9 +82,9 @@ class WalkingGame extends FlameGame with HasCollisionDetection {
 
     if (!joystick.delta.isZero()) {
       final velocity = joystick.relativeDelta;
-      print("velo: $velocity"); // 1. 조이스틱의 움직임 확인
+      // print("velo: $velocity"); // 1. 조이스틱의 움직임 확인
       final newPosition = _avatar.position + (velocity * characterSpeed * dt);
-      print("new: $newPosition"); // 2. 새로운 위치 확인
+      // print("new: $newPosition"); // 2. 새로운 위치 확인
 
       double halfWidth = _avatar.width / 2;
       double halfHeight = _avatar.height / 2;

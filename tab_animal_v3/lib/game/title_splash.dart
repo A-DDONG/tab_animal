@@ -36,13 +36,6 @@ class _TitleSplashState extends State<TitleSplash>
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const GameTitle()));
     });
-    // _controller.addListener(() {
-    //   print("Controller Value: ${_controller.value}");
-    //   print("Drop Animation Value: ${_dropAnimation.value}");
-    //   print("Rise Animation Value: ${_riseAnimation.value}");
-    //   print("Side Animation Value: ${_sideAnimation.value}");
-    //   print("Fade Animation Value: ${_fadeAnimation.value}");
-    // });
   }
 
   // initState 이후 미디어 쿼리 가져옴

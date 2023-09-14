@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AnimalProvider extends ChangeNotifier {
   String? name;
@@ -9,6 +12,31 @@ class AnimalProvider extends ChangeNotifier {
   int level = 1;
   int attackPower = 10;
   int expRequiredForNextLevel = 150;
+
+  Future<void> initializeProvider(BuildContext context, String uid) async {
+    // 로그인 성공 후
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    // Firebase에서 UID에 해당하는 데이터 불러오기
+    // 예: Firestore에서 불러오는 경우
+    DocumentSnapshot doc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    if (doc.exists) {
+      // 필드에 따라 변수 초기화
+      name = doc['name'];
+      // ... (다른 필드 초기화)
+    } else {
+      // 새로운 사용자의 경우 초기값으로 설정
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'name': name,
+        'exp': 0,
+        'level': 1,
+        'attackPower': 10,
+        'selectedAnimal': selectedAnimal,
+      });
+    }
+    notifyListeners();
+  }
 
   final animalImageMap = {
     'dog': 'assets/images/dog.png',
@@ -64,6 +92,15 @@ class AnimalProvider extends ChangeNotifier {
       // 다음 레벨에 필요한 경험치를 계산 (옵션)
       expRequiredForNextLevel = level * 150; // 예시
     }
+    // Firebase에도 저장
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'exp': exp,
+      'level': level,
+      'attackPower': attackPower,
+      'name': name, // 추가
+      'selectedAnimal': selectedAnimal, // 추가
+    });
 
     notifyListeners(); // 상태가 변경되었음을 알림
   }

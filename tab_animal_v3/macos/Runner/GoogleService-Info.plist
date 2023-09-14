@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBfcWcik-W2AhNV2P20yjasWElkFGucfhs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>846889293282</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.addong.tabAnimal.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>tab-animal</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tab-animal.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:846889293282:ios:2c5ea7569034fa311715bb</string>
+</dict>
+</plist>

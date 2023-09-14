@@ -65,6 +65,24 @@ class _MainGameState extends State<MainGame> {
     });
   }
 
+  List<Widget> buildEventMenuButtons(Sprite? sprite) {
+    if (sprite == null) return [];
+    const buttonTexts = ['산책', '상점', '가방', '정보'];
+    const buttonOffsets = [20.0, 120.0, 220.0, 320.0];
+
+    return List.generate(buttonTexts.length, (index) {
+      return Positioned(
+        left: buttonOffsets[index],
+        top: 750,
+        child: CustomPaint(
+          size: const Size(75, 75),
+          painter: SpritePainter(sprite,
+              text: buttonTexts[index], textOffset: const Offset(20, 25)),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final animalProvider =
@@ -90,6 +108,7 @@ class _MainGameState extends State<MainGame> {
                             const Offset(100, 20),
                         '종류: ${animalProvider.getSelectedAnimalInKorean()}':
                             const Offset(250, 20),
+                        '레벨: ${animalProvider.level}': const Offset(13, 60),
                         '경험치: ${animalProvider.exp} / ${animalProvider.expRequiredForNextLevel}':
                             const Offset(100, 60),
                       },
@@ -112,46 +131,8 @@ class _MainGameState extends State<MainGame> {
                 ),
               ],
             ),
-          if (eventMenuSprite != null)
-            Positioned(
-              left: 20, // 원하는 x 좌표
-              top: 750, // 원하는 y 좌표
-              child: CustomPaint(
-                size: const Size(75, 75),
-                painter: SpritePainter(eventMenuSprite!,
-                    text: '산책', textOffset: const Offset(20, 25)),
-              ),
-            ),
-          if (eventMenuSprite != null)
-            Positioned(
-              left: 120, // 원하는 x 좌표
-              top: 750, // 원하는 y 좌표
-              child: CustomPaint(
-                size: const Size(75, 75),
-                painter: SpritePainter(eventMenuSprite!,
-                    text: '상점', textOffset: const Offset(20, 25)),
-              ),
-            ),
-          if (eventMenuSprite != null)
-            Positioned(
-              left: 220, // 원하는 x 좌표
-              top: 750, // 원하는 y 좌표
-              child: CustomPaint(
-                size: const Size(75, 75),
-                painter: SpritePainter(eventMenuSprite!,
-                    text: '가방', textOffset: const Offset(20, 25)),
-              ),
-            ),
-          if (eventMenuSprite != null)
-            Positioned(
-              left: 320, // 원하는 x 좌표
-              top: 750, // 원하는 y 좌표
-              child: CustomPaint(
-                size: const Size(75, 75),
-                painter: SpritePainter(eventMenuSprite!,
-                    text: '모름', textOffset: const Offset(20, 25)),
-              ),
-            ),
+          ...buildEventMenuButtons(eventMenuSprite),
+
           if (eventMenuSprite != null)
             Positioned(
               left: 160, // 원하는 x 좌표
@@ -205,11 +186,6 @@ class WalkingGameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GameWidget(
       game: walkingGame,
-      // overlayBuilderMap: {
-      //   KeyConstants.overlayKey: (BuildContext context, WalkingGame game) {
-      //     return OverlayController(game: game);
-      //   }
-      // },
     );
   }
 }

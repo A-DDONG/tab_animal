@@ -59,7 +59,7 @@ class _AnimalSelectState extends State<AnimalSelect> {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final boxHeight = constraints.maxHeight;
-                final boxWidth = constraints.maxWidth;
+                // final boxWidth = constraints.maxWidth;
                 return Stack(
                   children: [
                     Image.asset(
