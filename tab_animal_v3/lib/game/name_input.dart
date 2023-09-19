@@ -22,7 +22,8 @@ class _NameInputState extends State<NameInput> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      Provider.of<BgmProvider>(context, listen: false).playBgm();
+      Provider.of<BgmProvider>(context, listen: false)
+          .playBgm("title_background.mp3");
     });
   }
 

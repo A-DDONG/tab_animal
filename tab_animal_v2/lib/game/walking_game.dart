@@ -2,7 +2,6 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/gestures.dart';
 import 'package:tab_animal/sprite/components/animal_component.dart';
 import 'package:tab_animal/sprite/constants/all_constants.dart';
 

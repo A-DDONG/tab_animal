@@ -15,7 +15,7 @@ class AnimalComponent extends SpriteAnimationComponent with HasGameRef {
     hitbox.position = Vector2(-48, -48); // 중심을 기준으로 하므로 -48, -48
     hitbox.size = Vector2(96, 96); // 크기는 96, 96
     add(hitbox);
-    debugMode = true; // 디버그 모드 활성화
+    // debugMode = true; // 디버그 모드 활성화
   }
 
   late SpriteAnimation _downAnimation;

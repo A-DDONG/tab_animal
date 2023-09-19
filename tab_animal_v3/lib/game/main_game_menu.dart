@@ -1,6 +1,8 @@
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:tab_animal/game/game_title.dart';
+import 'menu_setting.dart';
+import 'menu_notice.dart';
 
 class MainMenu extends StatelessWidget {
   final VoidCallback onClose; // 닫기 버튼을 위한 콜백
@@ -58,35 +60,59 @@ class MainMenu extends StatelessWidget {
                   // 메뉴2 (menu2_ui)
                   Positioned(
                     left: 55, // x 좌표
-                    top: 250, // y 좌표
-                    child: Container(
-                      width: 300,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/menu2_ui.png"),
-                          fit: BoxFit
-                              .cover, // 여기서는 BoxFit.cover를 사용했지만, 필요에 따라 다른 값으로 설정 가능합니다.
+                    top: 270, // y 좌표
+                    child: GestureDetector(
+                      onTap: () {
+                        FlameAudio.play('menu_select.mp3'); // 메뉴 선택 효과음
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                NoticeListScreen(), // 공지사항 화면으로 이동
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 300,
+                        height: 60,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/menu2_ui.png"),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  // 메뉴3 (menu2_ui)
+
+                  // 메뉴3 (menu3_ui)
                   Positioned(
                     left: 55, // x 좌표
-                    top: 350, // y 좌표
-                    child: Container(
-                      width: 300,
-                      height: 60,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/menu3_ui.png"),
-                          fit: BoxFit
-                              .cover, // 여기서는 BoxFit.cover를 사용했지만, 필요에 따라 다른 값으로 설정 가능합니다.
+                    top: 390, // y 좌표
+                    child: GestureDetector(
+                      onTap: () {
+                        FlameAudio.play('menu_select.mp3'); // 메뉴 선택 효과음
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const SettingsMenu(), // SettingsMenu로 이동
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 300,
+                        height: 60,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/menu3_ui.png"),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
                   ),
+
                   // 닫기 버튼
                   Positioned(
                     right: 10,

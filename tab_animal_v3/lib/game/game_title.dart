@@ -23,7 +23,8 @@ class _GameTitleState extends State<GameTitle>
     super.initState();
 
     Future.delayed(Duration.zero, () {
-      Provider.of<BgmProvider>(context, listen: false).playBgm();
+      Provider.of<BgmProvider>(context, listen: false)
+          .playBgm("title_background.mp3");
     });
 
     _controller = AnimationController(
@@ -48,21 +49,51 @@ class _GameTitleState extends State<GameTitle>
     _controller.forward(); // 애니메이션 시작
   }
 
+// 삭제 버튼을 눌렀을 때 호출되는 함수
+  void _showDeleteConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('게임 정보 삭제'),
+          content: const Text('게임 정보를 삭제하고 새로 시작하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // 대화상자 닫기
+              },
+              child: const Text('아니오'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await Provider.of<AnimalProvider>(context, listen: false)
+                    .deleteGameData();
+                Navigator.pop(context); // 대화상자 닫기
+                // 로그인 화면으로 이동 또는 앱 재시작 로직
+              },
+              child: const Text('예'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        print('화면 탭됨');
+        debugPrint('화면 탭됨');
         User? currentUser = FirebaseAuth.instance.currentUser;
         if (currentUser != null) {
           String uid = currentUser.uid;
-          print('사용자 있음: $uid');
+          debugPrint('사용자 있음: $uid');
           await Provider.of<AnimalProvider>(context, listen: false)
               .initializeProvider(context, uid);
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const MainGame()));
         } else {
-          print('사용자 없음, 로그인 팝업 표시');
+          debugPrint('사용자 없음, 로그인 팝업 표시');
           await showLoginPopup(context);
         }
       },
@@ -80,7 +111,21 @@ class _GameTitleState extends State<GameTitle>
                       fit: BoxFit.cover,
                     ));
               },
-            ))
+            )),
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: ElevatedButton(
+                onPressed: _showDeleteConfirmationDialog,
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromRGBO(60, 58, 82, 1.0))),
+                child: const Text(
+                  '초기화',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ],
         ),
       ),
