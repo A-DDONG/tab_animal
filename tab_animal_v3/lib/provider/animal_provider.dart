@@ -218,6 +218,7 @@ class AnimalProvider extends ChangeNotifier with WidgetsBindingObserver {
     if (equippedItem != null) {
       attackPower -= (equippedItem!['attackPower'] as num).toInt(); // 공격력 감소
       equippedItem = null;
+      equippedItemSprite = null; // 이 부분을 추가합니다.
 
       // Firebase 업데이트 로직
       updateFirebase();

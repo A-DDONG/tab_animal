@@ -348,12 +348,14 @@ class EquippedItemPainter extends CustomPainter {
 
     canvas.drawRect(borderRect, borderPaint);
 
-    // 아이템 스프라이트 그리기
-    equippedItemSprite?.render(
-      canvas,
-      position: Vector2(0, 0),
-      size: Vector2(size.width, size.height),
-    );
+// 아이템 스프라이트 그리기
+    if (equippedItemSprite != null) {
+      equippedItemSprite?.render(
+        canvas,
+        position: Vector2(0, 0),
+        size: Vector2(size.width, size.height),
+      );
+    }
   }
 
   @override

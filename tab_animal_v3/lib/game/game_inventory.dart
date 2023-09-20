@@ -116,6 +116,9 @@ class _InventoryWidgetState extends State<InventoryWidget> {
                                   .removeItem(
                                       widget.inventory[selectedItemIndex!]);
                               Navigator.pop(context);
+                              setState(() {
+                                selectedItemIndex = null; // 선택 해제
+                              });
                             },
                             child: const Text(
                               '삭제',
